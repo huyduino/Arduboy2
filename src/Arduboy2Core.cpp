@@ -131,6 +131,7 @@ const uint8_t PROGMEM lcdBootProgram[] = {
 
   // set page address range
   // 0x22, 0x00, PAGE_ADDRESS_END
+#endif
 };
 
 
