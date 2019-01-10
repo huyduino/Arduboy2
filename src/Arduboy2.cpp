@@ -72,6 +72,7 @@ void Arduboy2Base::begin()
 
 void Arduboy2Base::flashlight()
 {
+#ifndef SLIMBOY
   if (!pressed(UP_BUTTON)) {
     return;
   }
@@ -89,6 +90,7 @@ void Arduboy2Base::flashlight()
   while (true) {
     idle();
   }
+#endif
 }
 
 void Arduboy2Base::systemButtons()
@@ -275,6 +277,7 @@ bool Arduboy2Base::nextFrame()
   return true;
 }
 
+#ifndef SLIMBOY
 bool Arduboy2Base::nextFrameDEV()
 {
   bool ret = nextFrame();
@@ -287,6 +290,7 @@ bool Arduboy2Base::nextFrameDEV()
   }
   return ret;
 }
+#endif
 
 int Arduboy2Base::cpuLoad()
 {
