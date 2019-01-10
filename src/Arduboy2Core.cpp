@@ -174,6 +174,22 @@ void Arduboy2Core::setCPUSpeed8MHz()
 // This routine must be modified if any pins are moved to a different port
 void Arduboy2Core::bootPins()
 {
+#ifdef SLIMBOY
+  // Port C INPUT_PULLUP
+  PORTC |= _BV(LEFT_BUTTON_BIT) | _BV(UP_BUTTON_BIT) |
+           _BV(B_BUTTON_BIT);
+  DDRC &= ~(_BV(LEFT_BUTTON_BIT) | _BV(UP_BUTTON_BIT) |
+      _BV(B_BUTTON_BIT));
+  // Port D INPUT_PULLUP
+  PORTD |= _BV(RIGHT_BUTTON_BIT) |
+           _BV(DOWN_BUTTON_BIT) | _BV(A_BUTTON_BIT);
+  DDRD &= ~(_BV(RIGHT_BUTTON_BIT) |
+      _BV(DOWN_BUTTON_BIT) | _BV(A_BUTTON_BIT));
+  DDRD  |= _BV(GREEN_LED_BIT)   | _BV(BLUE_LED_BIT) | _BV(RED_LED_BIT);
+
+  // switch off LEDs by default
+  PORTD &= ~(_BV(GREEN_LED_BIT)   | _BV(BLUE_LED_BIT) | _BV(RED_LED_BIT));
+#else
 #ifdef ARDUBOY_10
 
   // Port B INPUT_PULLUP or HIGH
@@ -254,6 +270,7 @@ void Arduboy2Core::bootPins()
   // Port F outputs (none)
   // Speaker: Not set here. Controlled by audio class
 
+#endif
 #endif
 }
 
@@ -498,6 +515,7 @@ void Arduboy2Core::paintScreen(uint8_t image[], bool clear)
       [len_lsb] "M"   (WIDTH * (HEIGHT / 8 * 2) & 0xFF), // 2: for delay loop multiplier
       [clear]   "r"   (clear)
   );
+#endif
 }
 #if 0
 // For reference, this is the "closed loop" C++ version of paintScreen()
@@ -538,7 +556,6 @@ void Arduboy2Core::paintScreen(uint8_t image[], bool clear)
   }
   while (!(SPSR & _BV(SPIF))) { } // wait for the last byte to be sent
 }
-#endif
 #endif
 
 void Arduboy2Core::blank()
